@@ -1,32 +1,45 @@
-<div style="background:#f9f9f9;padding:20px;border-radius:10px;max-width:100%;">
-    <style>
-        input{
-            padding: 10px;
-            border: 1px solid #ccc;
-        }
-    </style>
-  <h3>Mortgage Calculator</h3>
-  <label>Home Price ($)</label>
-  <input type="number" id="price" placeholder="e.g. 300000" style="width:100%;margin-bottom:10px;">
-  <label>Down Payment (%)</label>
-  <input type="number" id="down" placeholder="e.g. 20" style="width:100%;margin-bottom:10px;">
-  <label>Interest Rate (%)</label>
-  <input type="number" id="rate" placeholder="e.g. 5" style="width:100%;margin-bottom:10px;">
-  <label>Loan Term (Years)</label>
-  <input type="number" id="years" placeholder="e.g. 30" style="width:100%;margin-bottom:10px;">
-  <button onclick="calcMortgage()" style="width:100%;background:#007BFF;color:#fff;padding:10px;border:none;border-radius:5px;">Calculate</button>
-  <h4 id="result" style="margin-top:15px;"></h4>
+<div style="background: #ffffff; padding: 30px; border-radius: 15px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); max-width: 450px; margin: 0 auto; font-family: 'Segoe UI', Roboto, sans-serif; color: #333;">
+  <h2 style="text-align:center; color:#007BFF; margin-bottom:25px;">🏠 Mortgage Calculator</h2>
+  
+  <label style="font-weight:600;">Home Price ($)</label>
+  <input type="number" id="price" placeholder="e.g. 300000" 
+    style="width:100%;margin:8px 0 15px;padding:12px;border:1px solid #ddd;border-radius:8px;font-size:16px;">
+
+  <label style="font-weight:600;">Down Payment (%)</label>
+  <input type="number" id="down" placeholder="e.g. 20" 
+    style="width:100%;margin:8px 0 15px;padding:12px;border:1px solid #ddd;border-radius:8px;font-size:16px;">
+
+  <label style="font-weight:600;">Interest Rate (%)</label>
+  <input type="number" id="rate" placeholder="e.g. 5" 
+    style="width:100%;margin:8px 0 15px;padding:12px;border:1px solid #ddd;border-radius:8px;font-size:16px;">
+
+  <label style="font-weight:600;">Loan Term (Years)</label>
+  <input type="number" id="years" placeholder="e.g. 30" 
+    style="width:100%;margin:8px 0 20px;padding:12px;border:1px solid #ddd;border-radius:8px;font-size:16px;">
+
+  <button onclick="calcMortgage()" 
+    style="width:100%;background:#007BFF;color:#fff;padding:14px;border:none;border-radius:10px;font-size:17px;font-weight:600;cursor:pointer;transition:0.3s;">
+    Calculate Payment
+  </button>
+
+  <h4 id="result" style="margin-top:25px;text-align:center;font-size:18px;font-weight:600;color:#007BFF;"></h4>
 </div>
 
 <script>
 function calcMortgage() {
-  const price = document.getElementById('price').value;
-  const down = document.getElementById('down').value / 100;
-  const rate = document.getElementById('rate').value / 100 / 12;
-  const years = document.getElementById('years').value * 12;
+  const price = parseFloat(document.getElementById('price').value) || 0;
+  const down = parseFloat(document.getElementById('down').value) / 100 || 0;
+  const rate = parseFloat(document.getElementById('rate').value) / 100 / 12 || 0;
+  const years = (parseFloat(document.getElementById('years').value) || 0) * 12;
   const loan = price - (price * down);
-  const payment = loan * rate / (1 - Math.pow(1 + rate, -years));
-  document.getElementById('result').innerText = 
-    'Estimated Monthly Payment: $' + payment.toFixed(2);
+  const payment = rate ? loan * rate / (1 - Math.pow(1 + rate, -years)) : loan / years;
+  
+  if (!price || !years) {
+    document.getElementById('result').innerText = "Please fill in all fields.";
+    return;
+  }
+
+  document.getElementById('result').innerHTML = 
+    '💰 Estimated Monthly Payment: <br><span style="font-size:22px;color:#28a745;">$' + payment.toFixed(2) + '</span>';
 }
 </script>
